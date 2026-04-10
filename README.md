@@ -43,7 +43,7 @@ Some design decisions to reduce flakiness and improve maintainability:
 ## Repository structure
 
 ```text
-Origami Risk work test.sln
+OrigamiPlaywright.sln
 OrigamiPlaywright/
   Core/
     BaseTest.cs

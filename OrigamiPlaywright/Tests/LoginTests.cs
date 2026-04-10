@@ -35,8 +35,8 @@ namespace OrigamiPlaywright.Tests
             await Expect(Page).ToHaveURLAsync($"{BaseUrl}{SecureArea}");
         }
 
-        [TestCase(InvalidUser, ValidPassword, "Your username is invalid!", TestName = "Login_InvalidUsername_ShowsError")]
-        [TestCase(ValidUser, InvalidPassword, "Your password is invalid!", TestName = "Login_InvalidPassword_ShowsError")]
+        [TestCase(InvalidUser, ValidPassword, ErrorMessageInvalidUser, TestName = "Login_InvalidUsername_ShowsError")]
+        [TestCase(ValidUser, InvalidPassword, ErrorMessageInvalidPassword, TestName = "Login_InvalidPassword_ShowsError")]
         public async Task InvalidLogin_ShouldShowErrorMessage(string username, string password, string expectedError)
         {
             
