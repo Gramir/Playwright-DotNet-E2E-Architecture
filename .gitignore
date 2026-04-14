@@ -258,6 +258,11 @@ orleans.codegen.cs
 Generated_Code/
 
 # Backup & report files from converting an old project file
+
+# Local-only SDET working documents
+docs/
+plans/
+feedback.md
 # to a newer Visual Studio version. Backup files are not needed,
 # because we have git ;-)
 _UpgradeReport_Files/
