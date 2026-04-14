@@ -1,4 +1,4 @@
-namespace OrigamiPlaywright.Data
+namespace Playwright_DotNet_E2E.Data
 {
     public static class Constants
     {

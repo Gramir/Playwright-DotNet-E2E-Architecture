@@ -1,8 +1,12 @@
 
 using Microsoft.Playwright;
 
-namespace OrigamiPlaywright.Pages
+namespace Playwright_DotNet_E2E.Pages
 {
+    /// <remarks>
+    /// Base page object for shared UI state that appears across multiple flows.
+    /// Centralizing common locators here keeps derived pages focused on behavior.
+    /// </remarks>
     public abstract class BasePage(IPage page)
     {
         protected readonly IPage _page = page;
