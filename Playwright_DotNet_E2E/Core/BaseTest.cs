@@ -32,8 +32,12 @@ namespace Playwright_DotNet_E2E.Core
             return services.BuildServiceProvider();
         }
 
+        /// <remarks>
+        /// Configures shared test services and starts tracing for failure diagnostics.
+        /// Trace is persisted only when a test fails.
+        /// </remarks>
         [SetUp]
-        public void SetupBase()
+        public async Task SetupBase()
         {
             var provider = _serviceProvider.Value;
             Settings = provider.GetRequiredService<TestSettings>();
@@ -43,6 +47,14 @@ namespace Playwright_DotNet_E2E.Core
             App = appManagerFactory(Page);
             AssertionsHelper = new AssertionHelper(Page);
             AuthService = provider.GetRequiredService<IAuthenticationService>();
+
+            await Context.Tracing.StartAsync(new()
+            {
+                Title = TestContext.CurrentContext.Test.Name,
+                Screenshots = true,
+                Snapshots = true,
+                Sources = true
+            });
         }
     
         /// <remarks>
@@ -52,6 +64,56 @@ namespace Playwright_DotNet_E2E.Core
         {
             var fullUrl = new Uri(new Uri(Settings.BaseUrl), relativePath).ToString();
             await Page.GotoAsync(fullUrl, new() { WaitUntil = WaitUntilState.DOMContentLoaded });
+        }
+
+        /// <remarks>
+        /// Records browser videos for UI tests. Videos are finalized when context closes.
+        /// </remarks>
+        public override BrowserNewContextOptions ContextOptions()
+        {
+            var options = base.ContextOptions();
+            var videosDir = Path.Combine(TestContext.CurrentContext.WorkDirectory, "TestResults", "Videos");
+            Directory.CreateDirectory(videosDir);
+
+            options.RecordVideoDir = videosDir;
+            options.RecordVideoSize = new RecordVideoSize
+            {
+                Width = 1280,
+                Height = 720
+            };
+
+            return options;
+        }
+
+        [TearDown]
+        public async Task CaptureFailureArtifactsAsync()
+        {
+            var failed = TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed;
+
+            var tracesDir = Path.Combine(TestContext.CurrentContext.WorkDirectory, "TestResults", "Traces");
+            Directory.CreateDirectory(tracesDir);
+            var safeTestName = string.Join("_", TestContext.CurrentContext.Test.Name.Split(Path.GetInvalidFileNameChars()));
+
+            if (failed)
+            {
+                var tracePath = Path.Combine(tracesDir, $"{safeTestName}-{DateTime.UtcNow:yyyyMMddHHmmss}.zip");
+                await Context.Tracing.StopAsync(new() { Path = tracePath });
+                TestContext.AddTestAttachment(tracePath, "Failure trace");
+            }
+            else
+            {
+                await Context.Tracing.StopAsync();
+            }
+
+            if (failed)
+            {
+                var screenshotsDir = Path.Combine(TestContext.CurrentContext.WorkDirectory, "TestResults", "Artifacts");
+                Directory.CreateDirectory(screenshotsDir);
+                var screenshotPath = Path.Combine(screenshotsDir, $"{safeTestName}-{DateTime.UtcNow:yyyyMMddHHmmss}.png");
+
+                await Page.ScreenshotAsync(new() { Path = screenshotPath, FullPage = true });
+                TestContext.AddTestAttachment(screenshotPath, "Failure screenshot");
+            }
         }
     }
 }
