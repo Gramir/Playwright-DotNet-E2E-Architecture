@@ -69,17 +69,3 @@ dotnet test --filter "Category=Infrastructure"
 dotnet test --filter "Category=Unit"
 dotnet test --filter "Category=UI&Category=Smoke"
 ```
-
-## ✅ How To Validate CI/CD Is Working
-
-1. Push a branch or open a Pull Request.
-2. Open GitHub `Actions` tab and verify workflow `E2E CI` runs.
-3. Confirm `smoke-gate` and `full-suite` jobs are green.
-4. Download workflow artifacts:
-   - `smoke-results`
-   - `full-suite-results`
-5. Inspect diagnostics inside artifacts:
-   - `*.trx` test reports
-   - `TestResults/Artifacts` screenshots
-   - `TestResults/Traces` trace zip files (open with `trace.playwright.dev`)
-   - `TestResults/Videos` recorded videos
