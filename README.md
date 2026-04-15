@@ -39,19 +39,47 @@ This framework moves beyond the traditional Page Object Model (POM) by implement
 ## 📊 CI/CD Integration & Artifacts
 The framework is fully integrated with **GitHub Actions**. On every push or pull request to the `main` branch, the suite executes headlessly.
 
-*(Configured to automatically capture Traces, Screenshots, and Videos on test failure to drastically reduce bug triage time).*
+Implemented:
+- Smoke gate in CI (`Category=UI` + `Category=Smoke`) before full-suite execution
+- Automatic screenshot + trace capture on failed UI tests via `BaseTest` tear-down
+- Video recording enabled through Playwright context options (`TestResults/Videos`)
+
+## 🧪 Test Layers
+The suite is physically and logically separated:
+
+- `Playwright_DotNet_E2E/Tests/UI`: end-to-end browser validation of product behavior
+- `Playwright_DotNet_E2E/Tests/Infrastructure`: framework-level validation (DI, factories, service wiring)
 
 ## 🏷️ Test Categories
 Use NUnit categories to filter execution by intent:
 
+- `UI`: browser-driven end-to-end tests
 - `Smoke`: critical happy-path flows
 - `Regression`: invalid credentials and failure-path coverage
 - `Infrastructure`: configuration, factory, and helper validation
+- `Unit`: pure non-browser tests (fast validation of framework logic)
 
 Example filters:
 
 ```bash
+dotnet test --filter "Category=UI"
 dotnet test --filter "Category=Smoke"
 dotnet test --filter "Category=Regression"
 dotnet test --filter "Category=Infrastructure"
+dotnet test --filter "Category=Unit"
+dotnet test --filter "Category=UI&Category=Smoke"
 ```
+
+## ✅ How To Validate CI/CD Is Working
+
+1. Push a branch or open a Pull Request.
+2. Open GitHub `Actions` tab and verify workflow `E2E CI` runs.
+3. Confirm `smoke-gate` and `full-suite` jobs are green.
+4. Download workflow artifacts:
+   - `smoke-results`
+   - `full-suite-results`
+5. Inspect diagnostics inside artifacts:
+   - `*.trx` test reports
+   - `TestResults/Artifacts` screenshots
+   - `TestResults/Traces` trace zip files (open with `trace.playwright.dev`)
+   - `TestResults/Videos` recorded videos
