@@ -2,8 +2,9 @@ using Playwright_DotNet_E2E.Core;
 using static Playwright_DotNet_E2E.Data.Constants.LoginData;
 using static Playwright_DotNet_E2E.Data.Constants.Routes;
 
-namespace Playwright_DotNet_E2E.Tests
+namespace Playwright_DotNet_E2E.Tests.UI
 {
+    [Category("UI")]
     public class LoginTests : BaseTest
     {
 

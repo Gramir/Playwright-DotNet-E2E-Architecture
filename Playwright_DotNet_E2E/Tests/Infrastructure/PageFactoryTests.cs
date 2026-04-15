@@ -4,13 +4,14 @@ using NUnit.Framework;
 using Playwright_DotNet_E2E.Core;
 using Playwright_DotNet_E2E.Pages;
 
-namespace Playwright_DotNet_E2E.Tests
+namespace Playwright_DotNet_E2E.Tests.Infrastructure
 {
     /// <remarks>
     /// Tests for PageFactory lazy initialization and AppManager factory integration.
     /// Ensures that pages are created on-demand with the same IPage instance.
     /// </remarks>
     [Category("Infrastructure")]
+    [Category("Unit")]
     public class PageFactoryTests
     {
         private IPageFactory _factory = null!;

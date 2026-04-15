@@ -5,7 +5,7 @@ using Playwright_DotNet_E2E.Configuration;
 using Playwright_DotNet_E2E.Core;
 using Playwright_DotNet_E2E.Startup;
 
-namespace Playwright_DotNet_E2E.Tests
+namespace Playwright_DotNet_E2E.Tests.Infrastructure
 {
     /// <remarks>
     /// Infrastructure tests for validating DI container and configuration bootstrap.

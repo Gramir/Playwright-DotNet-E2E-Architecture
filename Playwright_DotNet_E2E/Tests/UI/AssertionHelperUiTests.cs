@@ -2,13 +2,14 @@ using Playwright_DotNet_E2E.Core;
 using static Playwright_DotNet_E2E.Data.Constants.LoginData;
 using static Playwright_DotNet_E2E.Data.Constants.Routes;
 
-namespace Playwright_DotNet_E2E.Tests
+namespace Playwright_DotNet_E2E.Tests.UI
 {
     /// <remarks>
     /// Verifies the reusable assertion helper against the real login flow.
     /// The tests intentionally exercise the helper rather than duplicating inline expectations.
     /// </remarks>
-    public class AssertionHelperTests : BaseTest
+    [Category("UI")]
+    public class AssertionHelperUiTests : BaseTest
     {
         [Test]
         [Category("Smoke")]

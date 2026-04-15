@@ -1,9 +1,10 @@
 using Playwright_DotNet_E2E.Services;
 using static Playwright_DotNet_E2E.Data.Constants.LoginData;
 
-namespace Playwright_DotNet_E2E.Tests
+namespace Playwright_DotNet_E2E.Tests.Infrastructure
 {
     [Category("Infrastructure")]
+    [Category("Unit")]
     public class AuthenticationServiceTests
     {
         [Test]
